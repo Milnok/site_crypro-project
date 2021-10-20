@@ -1,0 +1,69 @@
+{% extends 'crypto/base.html' %}
+
+{% block content %}
+
+<form action="" method="POST">{% csrf_token %}
+    <h1 align="center">Diffie-hellman</h1>
+    <div class="row">
+        <div class="col" align="center">
+            <h4><br></h4>
+            <div class="input-group mb-3">
+                <span class="input-group-text">P:</span>
+                <input class="form-control" id="InputP" name="p" value="{{ p }}" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">G:</span>
+                <input class="form-control" id="InputG" name="g" value="{{ g }}" readonly>
+            </div>
+            <button class="btn btn-primary btn-lg" type="submit" name="submit" value="GenPG">Генерация P, G
+            </button>
+        </div>
+        <div class="col" align="center">
+            <h4>Абонент A</h4>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Xa:</span>
+                <input class="form-control" id="InputXa" name="Xa" value="{{ Xa }}" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Ya:</span>
+                <input class="form-control" id="InputYa" name="Ya" value="{{ Ya }}" readonly>
+            </div>
+            <button class="btn btn-primary btn-lg" type="submit" name="submit" value="GetKey">Высчитать ключи</button>
+        </div>
+        <div class="col" align="center">
+            <h4>Абонент B</h4>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Xb:</span>
+                <input class="form-control" id="InputXb" name="Xb" value="{{ Xb }}" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Yb:</span>
+                <input class="form-control" id="InputYb" name="Yb" value="{{ Yb }}" readonly>
+            </div>
+            <h4>Y - открытый ключ, X - закрытый ключ</h4>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col" align="center">
+        </div>
+        <div class="col" align="center">
+            <div class="input-group mb-3">
+                <span class="input-group-text">Ключ A:</span>
+                <input class="form-control" id="InputKeyA" name="KeyA" value="{{ KeyA }}" readonly>
+            </div>
+        </div>
+        <div class="col" align="center">
+            <div class="input-group mb-3">
+                <span class="input-group-text">Ключ B:</span>
+                <input class="form-control" id="InputKeyB" name="KeyB" value="{{ KeyB }}" readonly>
+            </div>
+        </div>
+    </div>
+</form>
+{% if error %}
+    <div class="alert alert-danger" role="alert" align="center">
+        {{ error }}
+    </div>
+{% endif %}
+{% endblock %}

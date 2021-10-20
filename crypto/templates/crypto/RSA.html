@@ -1,0 +1,81 @@
+{% extends 'crypto/base.html' %}
+
+{% block content %}
+
+<form action="" method="POST">{% csrf_token %}
+    <h1 align="center">RSA</h1>
+    <div class="row">
+        <div class="col" align="center">
+            <div class="input-group mb-3">
+                <span class="input-group-text">P:</span>
+                <input class="form-control" id="InputP" name="p" placeholder="Введите P" value="{{ p }}">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Q:</span>
+                <input class="form-control" id="InputQ" name="q" placeholder="Введите Q" value="{{ q }}">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">E:</span>
+                <input class="form-control" id="InputE" name="e" placeholder="Введите E" value="{{ e }}">
+            </div>
+            <button class="btn btn-primary btn-lg" type="submit" name="submit" value="Random">Рандомная генерация P, Q,
+                E
+            </button>
+        </div>
+        <div class="col" align="center">
+            <div class="input-group mb-3">
+                <span class="input-group-text">Открытый ключ:</span>
+                <input class="form-control" id="InputOpen" name="open" value="{{ open }}" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Секретный ключ:</span>
+                <input class="form-control" id="InputSecret" name="secret" value="{{ secret }}" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">N:</span>
+                <input class="form-control" id="InputN" name="n" value="{{ n }}" readonly>
+            </div>
+            <button class="btn btn-primary btn-lg" type="submit" name="submit" value="Create">Создать ключи</button>
+        </div>
+    </div>
+    <br>
+    {% if success %}
+    <div class="alert alert-success" role="alert" align="center">
+        {{ success }}
+    </div>
+    {% endif %}
+    {% if error %}
+    <div class="alert alert-danger" role="alert" align="center">
+        {{ error }}
+    </div>
+    {% endif %}
+    <div class="row" align="center">
+        <div class="col-8">
+            <div class="input-group mb-3">
+                <span class="input-group-text">Изначальный<br>текст</span>
+                <textarea class="form-control" id="text1" name="text1" rows="3">{{ text1 }}</textarea>
+            </div>
+            <button class="btn btn-primary btn-lg" type="submit" name="submit" value="Shifr">Шифровать</button>
+            <br><br>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Шифрованный<br>текст</span>
+                <textarea class="form-control" id="text2" name="text2" rows="3" readonly>{{ text2 }}</textarea>
+            </div>
+            <button class="btn btn-primary btn-lg" type="submit" name="submit" value="Rasshifr">Расшифровать</button>
+            <br><br>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Расшифрованный<br>текст</span>
+                <textarea class="form-control" id="text3" name="text3" rows="3" readonly>{{ text3 }}</textarea>
+            </div>
+        </div>
+        <div class="col-4">
+            <br><br><br><br><br>
+            <div class="input-group">
+                <input type="file" class="form-control" aria-label="Upload" name="ShifrFile" value="{{ ShifrFile }}">
+                <button class="btn btn-primary" type="submit" name="submit" value="ShifrFile">Шифровать файл</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
