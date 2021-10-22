@@ -29,6 +29,7 @@ def RSA(request):
             elif request.POST['submit'] == 'Shifr':
                 request.session['text2'] = RSA_shifr(request.session['text1'], int(request.session['e']),
                                                      int(request.session['n']), None)
+
             elif request.POST['submit'] == 'Rasshifr':
                 request.session['text3'] = RSA_deshifr(request.session['text2'], int(request.session['secret']),
                                                        int(request.session['n']), None, None)

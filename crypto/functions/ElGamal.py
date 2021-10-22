@@ -17,14 +17,14 @@ def ElGamal_Shifr(text, g, Db, p, file):
         Db = int(Db)
         p = int(p)
     except BaseException:
-        return None, None
+        raise Exception
     if not Is_prime(p):
-        return None, None
+        raise Exception
     k = Gen_prime(p-3)
     e = ""
     for i in text:
         if int(i) > p:
-            return None, None
+            raise Exception
         e += str((i * exp_mod(Db, k, p)) % p) + " "
     e = e[:-1]
     r = exp_mod(g, k, p)
@@ -45,14 +45,14 @@ def ElGamal_RasShifr(text, r, p, Cb, file, filetype):
         p = int(p)
         Cb = int(Cb)
     except BaseException:
-        return None, None
+        raise Exception
     if not Is_prime(p):
-        return None
+        raise Exception
     chisla = text.split(" ")
     otv = ""
     for i in chisla:
         if int(i) > p:
-            return None
+            raise Exception
         if file:
             ofst.write(bytes([int(i) * (exp_mod(r, p - 1 - Cb, p)) % p]))
         if not file:

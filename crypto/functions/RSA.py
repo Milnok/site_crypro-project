@@ -39,7 +39,7 @@ def RSA_shifr(text, e, n, file):
     otv = ""
     for i in text:
         if i > n:
-            return None
+            raise Exception
         otv += str(exp_mod(i, e, n)) + " "
     otv = otv[:-1]
     if file:
