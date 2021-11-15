@@ -1,0 +1,34 @@
+{% extends 'crypto/base.html' %}
+
+{% block content %}
+
+<form action="" method="POST">{% csrf_token %}
+    <h1 align="center">MD5</h1>
+    <div class="row" align="center">
+        <div class="col-8">
+            <div class="input-group mb-3">
+                <span class="input-group-text">Изначальный<br>текст</span>
+                <textarea class="form-control" id="text1" name="text1" rows="8">{{ text1 }}</textarea>
+            </div>
+            <button class="btn btn-primary btn-lg" type="submit" name="submit" value="Hash">Хеширование</button>
+            <br><br>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Хеш-сумма</span>
+                <input class="form-control" id="InputG" name="HashOne" value="{{ HashOne }}" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Предыдущие<br>хеш-суммы</span>
+                <textarea class="form-control" id="text2" name="text2" rows="8" readonly>{{ text2 }}</textarea>
+            </div>
+        </div>
+        <div class="col-4">
+            <br><br><br><br><br>
+            <div class="input-group">
+                <input type="file" class="form-control" aria-label="Upload" name="HashFile" value="{{ HashFile }}">
+                <button class="btn btn-primary" type="submit" name="submit" value="HashFile">Хешировать файл</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

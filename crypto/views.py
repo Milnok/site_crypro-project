@@ -4,6 +4,8 @@ from crypto.functions.RSA import RSA_gen_PQE, RSA_gen, RSA_shifr, RSA_deshifr
 from crypto.functions.Diffie_Hellman import Diffie_Hellman_gen_P_G, Diffie_Hellman_gen
 from crypto.functions.Shamir import Shamir_gen, ShamirShifr
 from crypto.functions.ElGamal import ElGamal_Shifr, ElGamal_RasShifr
+from crypto.functions.MD5 import MD5_hash
+from crypto.functions.SHA import SHA_hash
 
 
 def home(request):
@@ -129,10 +131,12 @@ def Elgamal(request):
                                                             False,
                                                             None)
             elif request.POST['submit'] == 'ShifrFile':
-                asd, request.session['r'] = ElGamal_Shifr('media\\' + request.POST['ShifrFile'], int(request.session['g']),
-                              int(request.session['Yb']), int(request.session['p']), True)
+                asd, request.session['r'] = ElGamal_Shifr('media\\' + request.POST['ShifrFile'],
+                                                          int(request.session['g']),
+                                                          int(request.session['Yb']), int(request.session['p']), True)
                 filetype = request.POST['ShifrFile'].split(".")[-1]
-                ElGamal_RasShifr('media\\' + request.POST['ShifrFile'], int(request.session['r']), int(request.session['p']), int(request.session['Xb']), True, filetype)
+                ElGamal_RasShifr('media\\' + request.POST['ShifrFile'], int(request.session['r']),
+                                 int(request.session['p']), int(request.session['Xb']), True, filetype)
                 Return['success'] = 'Файл удачно зашифрован и расшифрован'
         except:
             for field in fields:
@@ -142,3 +146,45 @@ def Elgamal(request):
         for field in fields:
             Return[field] = request.session[field]
         return render(request, 'crypto/Elgamal.html', Return)
+
+
+def MD5(request):
+    if request.method == 'GET':
+        return render(request, 'crypto/MD5.html')
+    else:
+        fields = ('HashOne', 'text1', 'text2')
+        Return = {}
+        for field in fields:
+            request.session[field] = request.POST[field]
+        if request.POST['submit'] == 'Hash':
+            request.session['HashOne'] = MD5_hash(request.session['text1'], False)
+            request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
+        elif request.POST['submit'] == 'HashFile':
+            request.session['HashOne'] = MD5_hash('media\\' + request.POST['HashFile'], True)
+            request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
+        else:
+            return render(request, 'crypto/MD5.html', Return)
+    for field in fields:
+        Return[field] = request.session[field]
+    return render(request, 'crypto/MD5.html', Return)
+
+
+def SHA(request):
+    if request.method == 'GET':
+        return render(request, 'crypto/SHA.html')
+    else:
+        fields = ('HashOne', 'text1', 'text2')
+        Return = {}
+        for field in fields:
+            request.session[field] = request.POST[field]
+        if request.POST['submit'] == 'Hash':
+            request.session['HashOne'] = SHA_hash(request.session['text1'], False)
+            request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
+        elif request.POST['submit'] == 'HashFile':
+            request.session['HashOne'] = SHA_hash('media\\' + request.POST['HashFile'], True)
+            request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
+        else:
+            return render(request, 'crypto/SHA.html', Return)
+    for field in fields:
+        Return[field] = request.session[field]
+    return render(request, 'crypto/SHA.html', Return)

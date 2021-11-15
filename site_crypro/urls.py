@@ -24,4 +24,7 @@ urlpatterns = [
     path('Diffie-hellman/', views.Diffie_hellman, name="Diffie-hellman"),
     path('Shamir/', views.Shamir, name="Shamir"),
     path('Elgamal/', views.Elgamal, name="Elgamal"),
+    path('MD5/', views.MD5, name="MD5"),
+    path('SHA/', views.SHA, name="SHA"),
+
 ]
