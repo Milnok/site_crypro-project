@@ -156,13 +156,14 @@ def MD5(request):
         Return = {}
         for field in fields:
             request.session[field] = request.POST[field]
-        if request.POST['submit'] == 'Hash':
-            request.session['HashOne'] = MD5_hash(request.session['text1'], False)
-            request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
-        elif request.POST['submit'] == 'HashFile':
-            request.session['HashOne'] = MD5_hash('media\\' + request.POST['HashFile'], True)
-            request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
-        else:
+        try:
+            if request.POST['submit'] == 'Hash':
+                request.session['HashOne'] = MD5_hash(request.session['text1'], False)
+                request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
+            elif request.POST['submit'] == 'HashFile':
+                request.session['HashOne'] = MD5_hash('media\\' + request.POST['HashFile'], True)
+                request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
+        except:
             return render(request, 'crypto/MD5.html', Return)
     for field in fields:
         Return[field] = request.session[field]
@@ -177,13 +178,14 @@ def SHA(request):
         Return = {}
         for field in fields:
             request.session[field] = request.POST[field]
-        if request.POST['submit'] == 'Hash':
-            request.session['HashOne'] = SHA_hash(request.session['text1'], False)
-            request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
-        elif request.POST['submit'] == 'HashFile':
-            request.session['HashOne'] = SHA_hash('media\\' + request.POST['HashFile'], True)
-            request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
-        else:
+        try:
+            if request.POST['submit'] == 'Hash':
+                request.session['HashOne'] = SHA_hash(request.session['text1'], False)
+                request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
+            elif request.POST['submit'] == 'HashFile':
+                request.session['HashOne'] = SHA_hash('media\\' + request.POST['HashFile'], True)
+                request.session['text2'] = request.session['HashOne'] + '\n' + request.session['text2']
+        except:
             return render(request, 'crypto/SHA.html', Return)
     for field in fields:
         Return[field] = request.session[field]
