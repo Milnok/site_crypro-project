@@ -9,15 +9,12 @@ def Diffie_Hellman_gen_P_G():
     while 1 == 1:
         q = Gen_prime(pow(10,100))
         if Is_prime(2 * q + 1):
-            print(time.time() - start)
             p = 2 * q + 1
             abc = 0
             while 1 == 1:
                 abc += 1
                 g = random.randint(0, p - 1)
-                print(abc)
                 if exp_mod(g, q, p) != 1:
-                    print(time.time() - start)
                     return p, g
 
 

@@ -60,7 +60,3 @@ def Gen_prime(maximum):
         p = random.randint(2, maximum)
         if Is_prime(p):
             return p
-
-start = time.time()
-n = Is_prime(7049722331715672582839399323624014869024374506084910771740340736233293676067699923201539710635397843)
-print(time.time()-start)

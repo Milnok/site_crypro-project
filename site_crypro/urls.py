@@ -26,5 +26,6 @@ urlpatterns = [
     path('Elgamal/', views.Elgamal, name="Elgamal"),
     path('MD5/', views.MD5, name="MD5"),
     path('SHA/', views.SHA, name="SHA"),
-
+    path('hashRSA/', views.hashRSA, name="hashRSA"),
+    path('hashELGamal/', views.hashELGamal, name="hashELGamal"),
 ]

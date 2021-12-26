@@ -116,7 +116,6 @@ def MD5_hash(text, file: bool):
     bit_strk = add_length(text, file)
     for i in range(len(bit_strk) // 512):
         int_list.append(bit512_to_list_int(bit_strk[i * 512:(i + 1) * 512]))
-    T = [int(pow(2, 32) * abs(math.sin(i + 1))) for i in range(64)]
     A, B, C, D = obrabotka_texta(int_list)
 
     tmp = bitarray(endian="big")

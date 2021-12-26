@@ -6,6 +6,8 @@ from crypto.functions.Shamir import Shamir_gen, ShamirShifr
 from crypto.functions.ElGamal import ElGamal_Shifr, ElGamal_RasShifr
 from crypto.functions.MD5 import MD5_hash
 from crypto.functions.SHA import SHA_hash
+from crypto.functions.hashRSA import RSA_hash_step1, RSA_hash_step2
+from crypto.functions.hashELGamal import hash_ELGamal_step1, hash_ELGamal_step2, hash_ELGamal_genXY
 
 
 def home(request):
@@ -190,3 +192,113 @@ def SHA(request):
     for field in fields:
         Return[field] = request.session[field]
     return render(request, 'crypto/SHA.html', Return)
+
+
+def hashRSA(request):
+    if request.method == 'GET':
+        return render(request, 'crypto/hashRSA.html')
+    else:
+        fields = ('p', 'q', 'e', 'open', 'secret', 'n', 'text1', 'hash', 's', 'w')
+        Return = {}
+        try:
+            for field in fields:
+                request.session[field] = request.POST[field]
+
+            if request.POST['submit'] == 'Random':
+                request.session['p'], request.session['q'], request.session['e'] = RSA_gen_PQE()
+            elif request.POST['submit'] == 'Create':
+                request.session['open'], request.session['secret'], request.session['n'] = RSA_gen(request.session['p'],
+                                                                                                   request.session['q'],
+                                                                                                   request.session['e'])
+            elif request.POST['submit'] == 'FindS':
+                request.session['s'], request.session['hash'] = RSA_hash_step1(request.session['text1'],
+                                                                               int(request.session['secret']),
+                                                                               int(request.session['n']), False)
+            elif request.POST['submit'] == 'FindW':
+                request.session['w'], none = RSA_hash_step2(request.session['text1'],
+                                                            int(request.session['s']), int(request.session['e']),
+                                                            int(request.session['n']), False)
+            elif request.POST['submit'] == 'IsEqual':
+                if request.session['hash'] == request.session['w']:
+                    Return['equal'] = 'Равны'
+                else:
+                    Return['notequal'] = 'Не равны'
+            elif request.POST['submit'] == 'FileS':
+                request.session['s'], request.session['hash'] = RSA_hash_step1('media\\' + request.POST['FileS'],
+                                                                               int(request.session['secret']),
+                                                                               int(request.session['n']), True)
+            elif request.POST['submit'] == 'FileW':
+                request.session['w'], none = RSA_hash_step2('media\\' + request.POST['FileW'],
+                                                            int(request.session['s']), int(request.session['e']),
+                                                            int(request.session['n']), True)
+
+        except:
+            for field in fields:
+                Return[field] = request.session[field]
+            Return['error'] = 'Ошибка'
+            return render(request, 'crypto/hashRSA.html', Return)
+    for field in fields:
+        Return[field] = request.session[field]
+    return render(request, 'crypto/hashRSA.html', Return)
+
+
+def hashELGamal(request):
+    if request.method == 'GET':
+        return render(request, 'crypto/hashELGamal.html')
+    else:
+        fields = ('p', 'g', 'open', 'secret', 'text1', 'r', 's', 'left', 'right')
+        Return = {}
+        try:
+            for field in fields:
+                request.session[field] = request.POST[field]
+            if request.POST['submit'] == 'GenPG':
+                request.session['p'], request.session['g'] = Diffie_Hellman_gen_P_G()
+            elif request.POST['submit'] == 'GetKey':
+                request.session['secret'], request.session['open'] = hash_ELGamal_genXY(int(request.session['p']),
+                                                                                        int(request.session['g']))
+            elif request.POST['submit'] == 'FindRS':
+                request.session['r'], request.session['s'] = hash_ELGamal_step1(request.session['text1'],
+                                                                                int(request.session['secret']),
+                                                                                int(request.session['open']),
+                                                                                int(request.session['p']),
+                                                                                int(request.session['g']), False)
+            elif request.POST['submit'] == 'Send':
+                boolean, request.session['left'], request.session['right'] = hash_ELGamal_step2(
+                    request.session['text1'],
+                    int(request.session['open']),
+                    int(request.session['p']),
+                    int(request.session['g']),
+                    int(request.session['r']),
+                    int(request.session['s']), False)
+                if boolean:
+                    Return['equal'] = 'Равны'
+                elif not boolean:
+                    Return['notequal'] = 'Не равны'
+
+            elif request.POST['submit'] == 'FileRS':
+                request.session['r'], request.session['s'] = hash_ELGamal_step1('media\\' + request.POST['FileRS'],
+                                                                                int(request.session['secret']),
+                                                                                int(request.session['open']),
+                                                                                int(request.session['p']),
+                                                                                int(request.session['g']), True)
+            elif request.POST['submit'] == 'FileSend':
+                boolean, request.session['left'], request.session['right'] = hash_ELGamal_step2(
+                    'media\\' + request.POST['FileSend'],
+                    int(request.session['open']),
+                    int(request.session['p']),
+                    int(request.session['g']),
+                    int(request.session['r']),
+                    int(request.session['s']), True)
+                if boolean:
+                    Return['equal'] = 'Равны'
+                elif not boolean:
+                    Return['notequal'] = 'Не равны'
+
+        except:
+            for field in fields:
+                Return[field] = request.session[field]
+            Return['error'] = 'Ошибка'
+            return render(request, 'crypto/hashELGamal.html', Return)
+    for field in fields:
+        Return[field] = request.session[field]
+    return render(request, 'crypto/hashELGamal.html', Return)
